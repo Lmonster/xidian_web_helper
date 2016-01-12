@@ -1,12 +1,14 @@
 //
 //  AppDelegate.m
-//  西电网址
+//  网页助手
 //
-//  Created by 付国强 on 14/11/2.
+//  Created by 付国强 on 14/10/28.
 //  Copyright (c) 2014年 付国强. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "guideViewController.h"
+#import "dataModal.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +18,24 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"NotFirstUse"]){
+        ViewController * view = [[ViewController alloc] init];
+        UINavigationController * navigationView = [[UINavigationController alloc] initWithRootViewController:view];
+        self.window.rootViewController = navigationView;
+        self.window.backgroundColor = [UIColor whiteColor];
+        dataModal *data = [dataModal sharedDataModal];
+        data = [data init];
+    }else{
+        [[NSUserDefaults standardUserDefaults] setObject:@"Firest" forKey:@"NotFirstUse"];
+        guideViewController *view = [[guideViewController alloc] init];
+        UINavigationController * navigationView = [[UINavigationController alloc] initWithRootViewController:view];
+    navigationView.navigationBarHidden = YES;
+        self.window.rootViewController = navigationView;
+        dataModal *data = [dataModal sharedDataModal];
+        data = [data initData];
+    }
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
